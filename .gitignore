@@ -1,2 +1,7 @@
 # Data files
 isss_data/
+
+# Virtual environment folder
+venv/
+
+
