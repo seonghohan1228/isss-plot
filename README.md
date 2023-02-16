@@ -1,5 +1,5 @@
 # isss-plot
-New version of the old "isss" package".
+New version of the old 'isss' package.
 Windows OS is not yet supported.
 
 ## Installation
@@ -10,19 +10,19 @@ In order to keep the required packages separate from other local packages, it is
 sudo apt install python3-venv
 ```
 
-Create a virtual environment with the folder name as '.venv':
+Create a virtual environment with the folder name as 'venv':
 
 ```sh
-python 0m venv .venv
+python3 -m venv venv
 ```
 
 Activate the virtual enviroment:
 
 ```sh
-. ./venv/bin/activate
+. venv/bin/activate
 ```
 
-If (.venv) appears on the terminal, the activation is complete.
+If (venv) appears on the terminal, the activation is complete.
 In order to deactivate:
 
 ```sh
