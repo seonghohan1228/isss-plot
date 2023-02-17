@@ -1,0 +1,7 @@
+# constants.py
+
+FILENAME="HEPD_DIV_20200713_0516_ORB_08733.h5"
+FILEPATH="./isss_data/" + FILENAME
+
+
+

@@ -1,17 +1,21 @@
 # main.py
 
-# import h5py
+import constants
+import h5py
 
-def main(filename):
+filepath = constants.FILEPATH
+
+def main():
     # Load file
-    # with h5py.File(filename)
-    print(filename)
-    # Read and process data
-    
+    with h5py.File(filepath) as f:
+        print("Opening file: " + filepath)
+            
+        # Read and process data
+        f.close()
     
     # Plot
 
 if __name__ == "__main__":
-    main(filename)
+    main()
 
 
