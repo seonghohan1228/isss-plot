@@ -1,0 +1,26 @@
+1. Data structure
+HEPD file
+/
+    HEPD_DIV
+        axis0
+        axis1
+        block0_items
+        block0_values
+        *block1_items
+        *block1_values
+        *block2_items
+        *block2_values
+
+MEPD file
+/
+    MEPD_SCI
+        axis0
+        axis1
+        block0_items
+        block0_values
+        *block1_items
+        *lock1_values
+        *block2_items
+        *block2_values
+
+Groups with * are used.
