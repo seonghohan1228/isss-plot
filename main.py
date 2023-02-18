@@ -1,19 +1,17 @@
 # main.py
 
-import constants
-import h5py
+from constants import *
+from functions import *
 
-filepath = constants.FILEPATH
+SHOW_TREE = True
+ORB_NO = 8737
 
 def main():
     # Load file
-    with h5py.File(filepath) as f:
-        print("Opening file: " + filepath)
-            
-        # Read and process data
-        f.close()
-    
+    data = read_hdf(ORB_NO, SHOW_TREE)
+    print(data)
     # Plot
+
 
 if __name__ == "__main__":
     main()
