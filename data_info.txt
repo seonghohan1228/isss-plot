@@ -1,4 +1,6 @@
 1. Data structure
+/(root) -> Group -> Datasets
+
 HEPD file
 /
     HEPD_DIV
@@ -23,4 +25,141 @@ MEPD file
         *block2_items
         *block2_values
 
-Groups with * are used.
+Datasets with * are used.
+
+
+Data in the dataset: /HEPD_DIV/block1_items
+    b'FC'
+    b'ID'
+    b'PC0'
+    b'HK'
+    b'DT'
+    b'PC1'
+    b'LENGTH'
+    b'TIME_x'
+    b'SUB_SEC'
+    b'S0_00'
+    b'S0_01'
+    ...
+    b'S0_39'
+    b'S0_40'
+    b'S1_00'
+    b'S1_01'
+    ...
+    b'S1_39'
+    b'S1_40'
+    b'S2_00'
+    b'S2_01'
+    ...
+    b'S2_39'
+    b'S2_40'
+    b'VM_A'
+    b'VM_B'
+    b'VM_C'
+    b'TEMP_HV_A'
+    b'TEMP_HV_B'
+    b'TEMP_HV_C'
+    b'TEMP_HEPD'
+    b'CS_GS_SAT'
+
+Data in the dataset: /HEPD_DIV/block2_items
+    b'TAMp_0'
+    b'TAMp_1'
+    b'TAMp_2'
+    b'TAMp_3'
+    b'TAMr_0'
+    b'TAMr_1'
+    b'TAMr_2'
+    b'TAMr_3'
+    b'GRA_X'
+    b'GRA_Y'
+    b'GRA_Z'
+    b'GRA_SKEW'
+    b'QUAT_X'
+    b'QUAT_Y'
+    b'QUAT_Z'
+    b'QUAT_W'
+    b'LATT'
+    b'LONG'
+    b'HEIGHT'
+    b'POS_0'
+    b'POS_1'
+    b'POS_2'
+
+
+Data in the dataset: /MEPD_SCI/block1_items
+    b'FC'
+    b'ID'
+    b'PC0'
+    b'HK'
+    b'DT'
+    b'PC1'
+    b'LENGTH'
+    b'DUMMY'
+    b'FRM_ID'
+    b'FRM_LEN'
+    b'TIME'
+    b'SUB_SEC'
+    b'DCB_ID'
+    b'DT0_CH00'
+    b'DT0_CH01'
+    ...
+    b'DT0_CH62'
+    b'DT0_CH63'
+    b'DT0_LLD_H'
+    b'DT0_LLD_L'
+    b'DT0_ULD_H'
+    b'DT0_ULD_L'
+    b'DT1_CH00'
+    b'DT1_CH01'
+    ..
+    b'DT1_CH62'
+    b'DT1_CH63'
+    b'DT1_LLD_H'
+    b'DT1_LLD_L'
+    b'DT1_ULD_H'
+    b'DT1_ULD_L'
+    b'DT2_CH00'
+    b'DT2_CH01'
+    ..
+    b'DT2_CH62'
+    b'DT2_CH63'
+    b'DT2_LLD_H'
+    b'DT2_LLD_L'
+    b'DT2_ULD_H'
+    b'DT2_ULD_L'
+    b'DT3_CH00'
+    b'DT3_CH01'
+    ..
+    b'DT3_CH62'
+    b'DT3_CH63'
+    b'DT3_LLD_H'
+    b'DT3_LLD_L'
+    b'DT3_ULD_H'
+    b'DT3_ULD_L'
+    b'CS_A'
+    b'CS_B'
+
+Data in the dataset: /MEPD_SCI/block1_items
+    b'TAMp_0'
+    b'TAMp_1'
+    b'TAMp_2'
+    b'TAMp_3'
+    b'TAMr_0'
+    b'TAMr_1'
+    b'TAMr_2'
+    b'TAMr_3'
+    b'GRA_X'
+    b'GRA_Y'
+    b'GRA_Z'
+    b'GRA_SKEW'
+    b'QUAT_X'
+    b'QUAT_Y'
+    b'QUAT_Z'
+    b'QUAT_W'
+    b'LATT'
+    b'LONG'
+    b'HEIGHT'
+    b'POS_0'
+    b'POS_1'
+    b'POS_2'
