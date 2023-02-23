@@ -1,5 +1,5 @@
 # isss-plot
-New version of the old 'isss' package.
+New version of the old "isss" package.
 Windows OS is not yet supported.
 
 ## Installation

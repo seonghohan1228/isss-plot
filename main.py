@@ -1,11 +1,14 @@
 from functions import *
+from classes import *
 
 ORB_NO = 8737
 
 def main():
-    hepd_data, mepd_data = read_hdf(ORB_NO)
-    graph_plot(hepd_data, mepd_data, ORB_NO, plot_folder='plot', 
-            plot_name='plot.png')
+    filepaths = find_filepaths(ORB_NO)
+    raw_data = read_hdf(filepaths)
+    isss_data = ISSSData()
+    isss_data.set_data(raw_data)
+    graph_plot(isss_data, ORB_NO)
 
 if __name__ == "__main__":
     main()
