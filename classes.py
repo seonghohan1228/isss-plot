@@ -25,5 +25,12 @@ class ISSSData:
         self.pc1 = [hepd_pc1, mepd_pc1_a, mepd_pc1_b]
 
         # Positional data ('LONG' 'LATT' data from HEPD file and MEPD file are identical) - pandas dataframe
-        self.position = [find_data(mepd_data, 1, 'LONG'), find_data(mepd_data, 1, 'LATT')]
+        # HEIGHT data in meters. Converted to kilometers
+        self.position = [find_data(hepd_data, 1, 'LONG'), find_data(hepd_data, 1, 'LATT'), find_data(hepd_data, 1, 'HEIGHT')/1000]
 
+        # Magnetic data
+        self.magnetic = []
+        for i in range(4):
+            self.magnetic.append(find_data(hepd_data, 1, f'TAMp_{i}'))
+        for i in range(4):
+            self.magnetic.append(find_data(hepd_data, 1, f'TAMr_{i}'))

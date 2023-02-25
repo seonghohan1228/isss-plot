@@ -140,7 +140,7 @@ Data in the dataset: /MEPD_SCI/block1_items
     b'CS_A'
     b'CS_B'
 
-Data in the dataset: /MEPD_SCI/block1_items
+Data in the dataset: /MEPD_SCI/block2_items
     b'TAMp_0'
     b'TAMp_1'
     b'TAMp_2'

@@ -85,16 +85,16 @@ def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
     fig = plt.figure(constrained_layout=True, figsize=(12, 15))
     fig.suptitle(f'Orbit: {orbit_no} Date: ')
     subfigs = fig.subfigures(1, 2, wspace=0.05)
-    subfigsnest = subfigs[0].subfigures(3, 1, height_ratios=[2, 3, 5])
+    subfigsnest0 = subfigs[0].subfigures(3, 1, height_ratios=[2, 3.5, 5.5])
     # Plot subplots
-    axes0 = subfigsnest[0].subplots(1, 2)
+    # PC1
+    axes0 = subfigsnest0[0].subplots(1, 2)
     axes0[0].plot(isss_data.pc1[0], isss_data.time[0])
     axes0[1].plot(isss_data.pc1[1], isss_data.time[1], color='black', marker='x', markersize=0.1, linestyle='-')
     axes0[1].plot(isss_data.pc1[2], isss_data.time[2], color='red', marker='D', markersize=0.1, linestyle='--')
     
-    axes1 = subfigsnest[1].subplots()
-    for i in isss_data.position[0]:
-        print(i)
+    # Position
+    axes1 = subfigsnest0[1].subplots()
     axes1.plot(isss_data.position[0], isss_data.position[1])
     map = Basemap(projection='merc', llcrnrlat=-85,urcrnrlat=85, llcrnrlon=-180, urcrnrlon=180)
     map.drawcoastlines()
@@ -102,6 +102,16 @@ def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
     map.drawmeridians(np.arange(0,360,45), labels=[False, False, False, True])
     x, y = map(isss_data.position[0], isss_data.position[1])
     map.scatter(x, y,color='r', marker='.')
+
+    # Magnetic field
+    axes2 = subfigsnest0[2].subplots(2, 1, gridspec_kw={'height_ratios': [2.5, 3]})
+    axes2[0].plot(isss_data.time[0], isss_data.magnetic[0], 'k', label='Bx')
+    axes2[0].plot(isss_data.time[0], isss_data.magnetic[1], 'b', label='By')
+    axes2[0].plot(isss_data.time[0], isss_data.magnetic[2], 'r', label='Bz')
+    axes2[0].plot(isss_data.time[0], isss_data.magnetic[4], '--k', label='IGRF Bx')
+    axes2[0].plot(isss_data.time[0], isss_data.magnetic[5], '--b', label='IGRF By')
+    axes2[0].plot(isss_data.time[0], isss_data.magnetic[6], '--r', label='IGRF Bz')
+    #axes2[0].plot(time, mag_avg, '--y', label='IGRF|B|')
     
     # Save figure
     plt.savefig(f'{plot_folder}/{plot_name}', dpi=200)
