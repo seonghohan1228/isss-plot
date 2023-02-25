@@ -1,10 +1,11 @@
-from functions import *
+from functions import find_data
 
 MEPD_DT_A = 3
 MEPD_DT_B = 4
 
 class ISSSData:
     def set_data(self, data):
+        # PC1 data
         hepd_data, mepd_data = data[0], data[1]
         hepd_time = find_data(hepd_data, 0, 'TIME_x')
         mepd_time = find_data(mepd_data, 0, 'TIME')
@@ -22,3 +23,7 @@ class ISSSData:
                 mepd_pc1_b.append(mepd_pc1[i])
         self.time = [hepd_time, mepd_time_a, mepd_time_b]
         self.pc1 = [hepd_pc1, mepd_pc1_a, mepd_pc1_b]
+
+        # Positional data ('LONG' 'LATT' data from HEPD file and MEPD file are identical) - pandas dataframe
+        self.position = [find_data(mepd_data, 1, 'LONG'), find_data(mepd_data, 1, 'LATT')]
+

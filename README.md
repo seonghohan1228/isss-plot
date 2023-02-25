@@ -3,29 +3,34 @@ New version of the old "isss" package.
 Windows OS is not yet supported.
 
 ## Installation
-### Python virtual environment (venv)
-In order to keep the required packages separate from other local packages, it is recommended to create a virtual envinment. To install the venv package, enter the following code:
+### Python virtual environment (conda)
+In order to keep the required packages separate from other local packages, it is recommended to create a virtual envinment.
+
+Using conda, create a virtual environment with the folder name as 'conda' in the current directory:
 
 ```sh
-sudo apt install python3-venv
-```
-
-Create a virtual environment with the folder name as 'venv':
-
-```sh
-python3 -m venv venv
+conda create --prefix ./conda
 ```
 
 Activate the virtual enviroment:
 
 ```sh
-. venv/bin/activate
+conda activate ./conda
 ```
 
-If (venv) appears on the terminal, the activation is complete.
+If (FILEPATH/conda) appears on the terminal, the activation is complete.
 In order to deactivate:
 
 ```sh
-deactivate
+conda deactivate
 ```
 
+Install packages using conda:
+
+```sh
+conda install -y numpy
+conda install -y matplotlib
+conda install -y h5py
+conda install -y pandas
+conda install -y -c conda-forge basemap
+```

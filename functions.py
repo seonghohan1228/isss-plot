@@ -3,6 +3,7 @@ import h5py
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from mpl_toolkits.basemap import Basemap
 
 KEYWORD1 = 'HEPD'
 KEYWORD2 = 'MEPD'
@@ -85,11 +86,23 @@ def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
     fig.suptitle(f'Orbit: {orbit_no} Date: ')
     subfigs = fig.subfigures(1, 2, wspace=0.05)
     subfigsnest = subfigs[0].subfigures(3, 1, height_ratios=[2, 3, 5])
-    axesnest = subfigsnest[0].subplots(1, 2)
     # Plot subplots
-    axesnest[0].plot(isss_data.pc1[0], isss_data.time[0])
-    axesnest[1].plot(isss_data.pc1[1], isss_data.time[1], color='black', marker='x', markersize=0.1, linestyle='-')
-    axesnest[1].plot(isss_data.pc1[2], isss_data.time[2], color='red', marker='D', markersize=0.1, linestyle='--')
+    axes0 = subfigsnest[0].subplots(1, 2)
+    axes0[0].plot(isss_data.pc1[0], isss_data.time[0])
+    axes0[1].plot(isss_data.pc1[1], isss_data.time[1], color='black', marker='x', markersize=0.1, linestyle='-')
+    axes0[1].plot(isss_data.pc1[2], isss_data.time[2], color='red', marker='D', markersize=0.1, linestyle='--')
+    
+    axes1 = subfigsnest[1].subplots()
+    for i in isss_data.position[0]:
+        print(i)
+    axes1.plot(isss_data.position[0], isss_data.position[1])
+    map = Basemap(projection='merc', llcrnrlat=-85,urcrnrlat=85, llcrnrlon=-180, urcrnrlon=180)
+    map.drawcoastlines()
+    map.drawparallels(np.arange(-90,90,30), labels=[True, False, False, False])
+    map.drawmeridians(np.arange(0,360,45), labels=[False, False, False, True])
+    x, y = map(isss_data.position[0], isss_data.position[1])
+    map.scatter(x, y,color='r', marker='.')
+    
     # Save figure
     plt.savefig(f'{plot_folder}/{plot_name}', dpi=200)
     print(f'Saved plot to {plot_folder}/{plot_name}')

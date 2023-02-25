@@ -2,7 +2,7 @@
 isss_data/
 
 # Virtual environment folder
-venv/
+conda/
 
 # Python cache
 __pycache__/
