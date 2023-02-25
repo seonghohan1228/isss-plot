@@ -1,3 +1,4 @@
+from datetime import datetime
 from functions import find_data
 
 MEPD_DT_A = 3
@@ -5,10 +6,11 @@ MEPD_DT_B = 4
 
 class ISSSData:
     def set_data(self, data):
-        # PC1 data
         hepd_data, mepd_data = data[0], data[1]
-        hepd_time = find_data(hepd_data, 0, 'TIME_x')
-        mepd_time = find_data(mepd_data, 0, 'TIME')
+        # Convert UNIX time to datetime object
+        hepd_time = [datetime.fromtimestamp(x) for x in find_data(hepd_data, 0, 'TIME_x')]
+        mepd_time = [datetime.fromtimestamp(x) for x in find_data(mepd_data, 0, 'TIME')]
+        # PC1 data
         hepd_pc1 = find_data(hepd_data, 0, 'PC1')
         mepd_pc1 = find_data(mepd_data, 0, 'PC1')
         mepd_dt = find_data(mepd_data, 0, 'DT')

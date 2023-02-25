@@ -1,9 +1,11 @@
+import warnings
 from functions import *
 from classes import *
 
-ORB_NO = 8737
+ORB_NO = 8795
 
 def main():
+    warnings.filterwarnings("ignore", category=DeprecationWarning) 
     filepaths = find_filepaths(ORB_NO)
     raw_data = read_hdf(filepaths)
     isss_data = ISSSData()

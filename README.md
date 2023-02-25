@@ -1,5 +1,5 @@
 # isss-plot
-New version of the old "isss" package.
+New version of the old "isss" package. Certain parts of the code was reused while others were completely redesigned.
 Windows OS is not yet supported.
 
 ## Installation
@@ -28,9 +28,12 @@ conda deactivate
 Install packages using conda:
 
 ```sh
-conda install -y numpy
-conda install -y matplotlib
-conda install -y h5py
-conda install -y pandas
-conda install -y -c conda-forge basemap
+conda install numpy matplotlib h5py pandas
+conda install -c conda-forge basemap
+```
+
+```sh
+sudo apt install gfortran
+pip install spacepy
+pip install aacgmv2
 ```
