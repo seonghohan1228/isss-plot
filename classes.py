@@ -1,3 +1,4 @@
+import numpy as np
 from datetime import datetime
 from functions import find_data
 
@@ -36,3 +37,13 @@ class ISSSData:
             self.magnetic.append(find_data(hepd_data, 1, f'TAMp_{i}'))
         for i in range(4):
             self.magnetic.append(find_data(hepd_data, 1, f'TAMr_{i}'))
+        
+        # Telescope data
+        tel = [[None] * 41] * 3
+        for i in range(3):
+            for j in range(41):
+                if j < 10:
+                    tel[i][j] = find_data(hepd_data, 0, f'S{i}_0{j}')
+                else:
+                    tel[i][j] = find_data(hepd_data, 0, f'S{i}_{j}')
+        self.telescope = tel

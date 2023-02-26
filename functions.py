@@ -1,12 +1,12 @@
 import os
 import sys
 import h5py
-import math
 import aacgmv2
 import spacepy
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.colors as mplc
 import spacepy.coordinates as coord
 from mpl_toolkits.basemap import Basemap
 
@@ -117,6 +117,16 @@ def geomag_lat(alt, time):
     return geomag_coord
 
 
+# Creates custom colormap for HEPD telescope and MEPD detector plot.
+def new_cmap():
+    jet = plt.cm.get_cmap('jet', 256)
+    newcolors = jet(np.linspace(0, 1, 256))
+    white = np.array([256/256, 256/256, 256/256, 1])
+    newcolors[0, :] = white
+    new_cmap = mplc.ListedColormap(newcolors)
+    return new_cmap
+
+
 # Plotting combined plots
 def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
     # Create figure
@@ -156,9 +166,12 @@ def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
     axes2[0].plot(isss_data.time[0], isss_data.magnetic[4], '--k', label='IGRF Bx')
     axes2[0].plot(isss_data.time[0], isss_data.magnetic[5], '--b', label='IGRF By')
     axes2[0].plot(isss_data.time[0], isss_data.magnetic[6], '--r', label='IGRF Bz')
-    mag_avg = [math.sqrt(isss_data.magnetic[4][i]**2 + isss_data.magnetic[5][i]**2 + isss_data.magnetic[6][i]**2) for i in range(len(isss_data.magnetic[4]))]
+    mag_avg = [np.sqrt(isss_data.magnetic[4][i]**2 + isss_data.magnetic[5][i]**2 + isss_data.magnetic[6][i]**2) for i in range(len(isss_data.magnetic[4]))]
     axes2[0].plot(isss_data.time[0], mag_avg, '--y', label='IGRF|B|')
     
+    # Telescope
+    axes2[1].imshow(X=isss_data.telescope[2], aspect='auto', origin='lower', cmap=new_cmap(), interpolation='none')
+
     # Save figure
     plt.savefig(f'{plot_folder}/{plot_name}', dpi=200)
     print(f'Saved plot to {plot_folder}/{plot_name}')
