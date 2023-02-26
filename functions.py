@@ -1,6 +1,7 @@
 import os
 import sys
 import h5py
+import math
 import aacgmv2
 import spacepy
 import numpy as np
@@ -106,7 +107,6 @@ def geomag_lat(alt, time):
             coordinates = coord.Coords([alt, i - 90, j - 180], 'GEO', 'sph')
             coordinates.ticks = spacepy.time.Ticktock(time, 'ISO')
             arr[i][j] = coordinates.convert('MAG', 'sph').lati
-            # arr[i][j] = (np.array(aacgmv2.get_aacgm_coord(i - 90, j - 180, int(alt / 1000), time)))[0]
     print('\tDone')
     for j in range(360):
         sys.stdout.write("\rProgress: [ {:.1f}%]".format((float(j+1)/360)*100))
@@ -141,12 +141,12 @@ def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
     x, y = map(isss_data.position[0], isss_data.position[1])
     map.scatter(x, y,color='r', marker='.')
     # Geomagnetic latitude
-    avg_alt = sum(isss_data.position[2]) / len(isss_data.position[2])
+    '''avg_alt = sum(isss_data.position[2]) / len(isss_data.position[2])
     geomag_coord = geomag_lat(avg_alt, isss_data.time[0][0])
     
     for i in range(5):
         x, y = map(np.arange(-180, 180, 1), geomag_coord[i,:])
-        map.plot(x, y, 'b')
+        map.plot(x, y, 'b')'''
 
     # Magnetic field
     axes2 = subfigsnest0[2].subplots(2, 1, gridspec_kw={'height_ratios': [2.5, 3]})
@@ -156,7 +156,8 @@ def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
     axes2[0].plot(isss_data.time[0], isss_data.magnetic[4], '--k', label='IGRF Bx')
     axes2[0].plot(isss_data.time[0], isss_data.magnetic[5], '--b', label='IGRF By')
     axes2[0].plot(isss_data.time[0], isss_data.magnetic[6], '--r', label='IGRF Bz')
-    #axes2[0].plot(time, mag_avg, '--y', label='IGRF|B|')
+    mag_avg = [math.sqrt(isss_data.magnetic[4][i]**2 + isss_data.magnetic[5][i]**2 + isss_data.magnetic[6][i]**2) for i in range(len(isss_data.magnetic[4]))]
+    axes2[0].plot(isss_data.time[0], mag_avg, '--y', label='IGRF|B|')
     
     # Save figure
     plt.savefig(f'{plot_folder}/{plot_name}', dpi=200)
