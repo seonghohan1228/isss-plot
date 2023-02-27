@@ -6,7 +6,6 @@ import spacepy
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.colors as mplc
 import spacepy.coordinates as coord
 import isss_plot_functions as ipf
 from mpl_toolkits.basemap import Basemap
@@ -93,10 +92,7 @@ def find_data(data, dataset_no, index):
 
 # Plotting combined plots
 def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png', 
-            pc1_bool=True,
-            pos_bool=True,
-            geomag_bool=True,
-            mag_bool=True):
+            pc1_bool=True, pos_bool=True, geomag_bool=True, mag_bool=True, tel_bool=True):
     print('Creating plot ...')
     # Create figure
     fig = plt.figure(constrained_layout=True, figsize=(12, 15))
@@ -128,7 +124,8 @@ def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png',
     
     # Telescope
     telescope = isss_data.telescope
-    ipf.plot_tel(telescope, axes2[1])
+    if tel_bool:
+        ipf.plot_tel(telescope, axes2[1])
 
     print('Plot completed')
 
