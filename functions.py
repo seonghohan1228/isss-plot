@@ -8,10 +8,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mplc
 import spacepy.coordinates as coord
+import isss_plot_functions as ipf
 from mpl_toolkits.basemap import Basemap
 
 KEYWORD1 = 'HEPD'
 KEYWORD2 = 'MEPD'
+
 
 
 # Finding filepaths with corresponding orbit number
@@ -89,88 +91,46 @@ def find_data(data, dataset_no, index):
     return data[dataset_no].loc[:, bytes(index, 'utf-8')]
 
 
-# Finds the index of an array that is closest to the given value.
-def closest(arr, value):
-    return min(range(len(arr)), key=lambda i: abs(arr[i]-value))
-
-
-# Takes the altitude and time to calculate the geomagnetic latitude line coordinates
-def geomag_lat(alt, time):
-    arr = np.zeros((181, 360))
-    geomag_coord = np.zeros((5, 360))
-    print('Creating matrix for geomagnetic coordinates')
-    for j in range(360):
-        for i in range(181):
-            # Show progress
-            sys.stdout.write("\rProgress: [ {:.1f}%]".format(float(j*181+i+1)/(360*181)*100))
-            sys.stdout.flush()
-            coordinates = coord.Coords([alt, i - 90, j - 180], 'GEO', 'sph')
-            coordinates.ticks = spacepy.time.Ticktock(time, 'ISO')
-            arr[i][j] = coordinates.convert('MAG', 'sph').lati
-    print('\tDone')
-    for j in range(360):
-        sys.stdout.write("\rProgress: [ {:.1f}%]".format((float(j+1)/360)*100))
-        sys.stdout.flush()
-        for i in range(5):
-            geomag_coord[i, j] = closest(arr[:, j], 30 * i - 60) - 90
-    print('\tDone')
-    return geomag_coord
-
-
-# Creates custom colormap for HEPD telescope and MEPD detector plot.
-def new_cmap():
-    jet = plt.cm.get_cmap('jet', 256)
-    newcolors = jet(np.linspace(0, 1, 256))
-    white = np.array([256/256, 256/256, 256/256, 1])
-    newcolors[0, :] = white
-    new_cmap = mplc.ListedColormap(newcolors)
-    return new_cmap
-
-
 # Plotting combined plots
-def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png'):
+def graph_plot(isss_data, orbit_no, plot_folder='./plot', plot_name='plot.png', 
+            pc1_bool=True,
+            pos_bool=True,
+            geomag_bool=True,
+            mag_bool=True):
+    print('Creating plot ...')
     # Create figure
     fig = plt.figure(constrained_layout=True, figsize=(12, 15))
     fig.suptitle(f'Orbit: {orbit_no} Date: ')
     subfigs = fig.subfigures(1, 2, wspace=0.05)
     subfigsnest0 = subfigs[0].subfigures(3, 1, height_ratios=[2, 3.5, 5.5])
-    # Plot subplots
-    # PC1
-    axes0 = subfigsnest0[0].subplots(1, 2)
-    axes0[0].plot(isss_data.pc1[0], isss_data.time[0], color='black', marker='.')
-    axes0[1].plot(isss_data.pc1[1], isss_data.time[1], color='black', marker='x', markersize=0.1, linestyle='-')
-    axes0[1].plot(isss_data.pc1[2], isss_data.time[2], color='red', marker='D', markersize=0.1, linestyle='--')
-    
-    # Position
-    axes1 = subfigsnest0[1].subplots()
-    axes1.plot(isss_data.position[0], isss_data.position[1])
-    map = Basemap(projection='merc', llcrnrlat=-85,urcrnrlat=85, llcrnrlon=-180, urcrnrlon=180)
-    map.drawcoastlines()
-    map.drawparallels(np.arange(-90,90,30), labels=[True, False, False, False])
-    map.drawmeridians(np.arange(0,360,45), labels=[False, False, False, True])
-    x, y = map(isss_data.position[0], isss_data.position[1])
-    map.scatter(x, y,color='r', marker='.')
-    # Geomagnetic latitude
-    '''avg_alt = sum(isss_data.position[2]) / len(isss_data.position[2])
-    geomag_coord = geomag_lat(avg_alt, isss_data.time[0][0])
-    
-    for i in range(5):
-        x, y = map(np.arange(-180, 180, 1), geomag_coord[i,:])
-        map.plot(x, y, 'b')'''
 
-    # Magnetic field
+    # Plot subplots
+    # PC1 plot
+    pc1, time = isss_data.pc1, isss_data.time
+    axes0 = subfigsnest0[0].subplots(1, 2)
+    if pc1_bool:
+        ipf.plot_pc1(pc1, time, axes0)
+    
+    # Position plot
+    position = isss_data.position
+    axes1 = subfigsnest0[1].subplots()
+    if pos_bool:
+        ipf.plot_position(position, axes1)
+        # Geomagnetic latitude plot
+        if geomag_bool:
+            ipf.plot_geomag(position[2], time[0][0], map)
+
+    # Magnetic field plot
+    magnetic = isss_data.magnetic
     axes2 = subfigsnest0[2].subplots(2, 1, gridspec_kw={'height_ratios': [2.5, 3]})
-    axes2[0].plot(isss_data.time[0], isss_data.magnetic[0], 'k', label='Bx')
-    axes2[0].plot(isss_data.time[0], isss_data.magnetic[1], 'b', label='By')
-    axes2[0].plot(isss_data.time[0], isss_data.magnetic[2], 'r', label='Bz')
-    axes2[0].plot(isss_data.time[0], isss_data.magnetic[4], '--k', label='IGRF Bx')
-    axes2[0].plot(isss_data.time[0], isss_data.magnetic[5], '--b', label='IGRF By')
-    axes2[0].plot(isss_data.time[0], isss_data.magnetic[6], '--r', label='IGRF Bz')
-    mag_avg = [np.sqrt(isss_data.magnetic[4][i]**2 + isss_data.magnetic[5][i]**2 + isss_data.magnetic[6][i]**2) for i in range(len(isss_data.magnetic[4]))]
-    axes2[0].plot(isss_data.time[0], mag_avg, '--y', label='IGRF|B|')
+    if mag_bool:
+        ipf.plot_mag(magnetic, time, axes2[0])
     
     # Telescope
-    axes2[1].imshow(X=isss_data.telescope[2], aspect='auto', origin='lower', cmap=new_cmap(), interpolation='none')
+    telescope = isss_data.telescope
+    ipf.plot_tel(telescope, axes2[1])
+
+    print('Plot completed')
 
     # Save figure
     plt.savefig(f'{plot_folder}/{plot_name}', dpi=200)
